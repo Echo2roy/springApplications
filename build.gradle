@@ -1,0 +1,56 @@
+
+buildscript{
+    repositories{
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.6.RELEASE")
+    }
+}
+
+plugins {
+    id "org.hibernate.gradle.tools" version "1.2.5"
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar{
+    baseName = 'searchapp'
+    group 'com.solatech'
+    version '1.0-SNAPSHOT'
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.hibernate:hibernate-core'
+    
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-core', version: '2.3.0'
+    compile group: 'com.sun.xml.bind', name: 'jaxb-impl', version: '2.3.0'
+    compile group: 'javax.activation', name: 'activation', version: '1.1.1'
+    
+    runtime 'mysql:mysql-connector-java'
+    runtime 'org.springframework.boot:spring-boot-devtools'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    //testCompile('javax.xml.bind:jaxb-api')
+}
+
+import org.hibernate.gradle.tools.Schema
+
+database{
+    basePackage = "com.solatech.searchapp.dataservice.dbmodel.orm"
+    url = "jdbc:mysql://localhost"
+    dialect = "org.hibernate.dialect.MySQL5Dialect"
+    catalog = ["searchapp" : new Schema("searchapp",".*")]
+}
